@@ -184,6 +184,8 @@ public class Donor extends User
         int id = Main.validateInput(1,this.myRequests.size());
         if(idsList.containsID(String.valueOf(id)))
         {
+            // If request is confirmed, the food item in that request is also deleted.
+            //Otherwise only the request is deleted.
             System.out.print("Enter 1 to confirm request\n2 to delete request: ");
             int choice = Main.validateInput(1,2);
             if (choice==1){
