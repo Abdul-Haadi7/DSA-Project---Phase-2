@@ -190,7 +190,8 @@ public class Donor extends User
             int choice = Main.validateInput(1,2);
             if (choice==1)
             {
-
+                //Delete the food item in the request
+                FileOperations.removeDonation(toBeDeleted.getFoodItemID());
             }
         }
     }
