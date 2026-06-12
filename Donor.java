@@ -188,7 +188,8 @@ public class Donor extends User
             //Otherwise only the request is deleted.
             System.out.print("Enter 1 to confirm request\n2 to delete request: ");
             int choice = Main.validateInput(1,2);
-            if (choice==1){
+            if (choice==1)
+            {
 
             }
         }
