@@ -1,46 +1,47 @@
-public class DoublyLinkedList
+public class DoublyLinkedList <Datatype>
 {
-    private Node head,tail;
+    private Node<Datatype> head,tail;
 
     public Node getHead()
     {
         return head;
     }
 
-    public void setHead(Node head)
+    public void setHead(Node<Datatype> head)
     {
         this.head = head;
     }
 
-    public Node getTail()
+    public Node<Datatype> getTail()
     {
         return tail;
     }
 
-    public void setTail(Node tail) {
+    public void setTail(Node<Datatype> tail) {
         this.tail = tail;
     }
-    public void insertAtEnd(Node str)
+    public void insertAtEnd(Node<Datatype> node)
     {
         if (this.head == null)
         {
-            head = tail = str;
+            head = tail = node;
             return;
         }
-        tail.setNext(str);
-        str.setPrevious(tail);
-        tail = str;
+        tail.setNext(node);
+        node.setPrevious(tail);
+        tail = node;
     }
-    public void displayDonations(){
-        Node temp = this.head;
+    public void displayList()
+    {
+        Node<Datatype> temp = this.head;
         while (temp!=null)
         {
-            System.out.print(temp);
+            System.out.print(temp.getData());
             temp = temp.getNext();
         }
     }
     public boolean containsID(String id){
-        Node temp = head;
+        Node<Datatype> temp = head;
         while(temp!=null)
         {
             if(temp.getData().equals(id)){

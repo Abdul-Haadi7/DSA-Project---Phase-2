@@ -8,7 +8,6 @@ public class Main
     public static void main(String[] args)
     {
         int choice = LogInOrSignIn.askChoice();
-        boolean successful = false;
         User u;
         if (choice == 0)
         {

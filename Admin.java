@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 //Admin class will be completed by phase 2.
 
@@ -22,10 +24,36 @@ public class Admin
             System.out.println("2-See donations of specific donor: ");
             System.out.println("3-See all requests: ");
             System.out.println("4-See requests of specific receiver: ");
-            System.out.print("5-Delete user: ");
+            System.out.print("5-Display sorted donations by weight: ");
             choice = Main.validateInput(0,5);
             if (choice==0){
                 break;
+            }
+            else if(choice == 1){
+                Quick_Access.displayDonations();
+            }
+            else if(choice == 2 || choice == 4)
+            {
+                Scanner input = new Scanner(System.in);
+                System.out.print("Enter id: ");
+                String id = input.nextLine();
+                if (choice==2){
+                    Quick_Access.displayDonationsByUser(id);
+                }
+                else {
+                    Quick_Access.displayRequestsByReceiver(id);
+                }
+            }
+            else if(choice == 3)
+            {
+                Quick_Access.displayRequests();
+            }
+            else if(choice == 5)
+            {
+                ArrayList<Donation> list = Quick_Access.sortDonationsByWeight();
+                for(Donation d:list){
+                    System.out.println(d);
+                }
             }
         }
     }

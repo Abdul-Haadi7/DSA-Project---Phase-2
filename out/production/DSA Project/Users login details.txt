@@ -2,3 +2,5 @@ Abdul Qadir,Qadir.8,0315676767,Lahore,abc
 Abdul Haadi,Haadi.7,03256849694,Lahore,pass
 Saad,Saadi01,03201111111,Karachi,abc
 Babar,Bobzy56,0315565656,Pindi,king
+Ali Khan,Ali.1,03257089076,Murree,Ali.foodLink
+Bilal Ahmad,Billa.7,03244110932,Kohat,12345

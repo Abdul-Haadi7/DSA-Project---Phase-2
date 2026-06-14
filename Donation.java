@@ -9,32 +9,17 @@ public class Donation
     private String donorID;
     private Donation next,previous;
 
-    //Constructor to create new donation. Every new donation is written to file also.
-    public Donation(Food_Item item, String donorID)
-    {
-        this.item = item;
-        this.donorID = donorID;
-        this.writeToFile();
-    }
-    /*Constructor to load existing donations in donor`s list, inside loadDonations()
-    functions in Donor and AllActiveDonations classes.*/
     public Donation(Food_Item item, String donorID,String donationID)
     {
         this.donationID = donationID;
         this.item = item;
         this.donorID = donorID;
     }
-    public Donation(String donationID,Food_Item item, String donorID)
-    {
-        this.donationID = donationID;
-        this.item = item;
-        this.donorID = donorID;
-    }
+
     public void writeToFile()
     {
         try
         {
-//            int donationID = Main.findMaxId("All active donations.txt")+1;
             FileWriter fw = new FileWriter("All active donations.txt",true);
             fw.write(donationID+","+this.donorID+","+item.toString());
             fw.close();
@@ -61,12 +46,25 @@ public class Donation
         this.previous = previous;
     }
 
+    public String getDonationID() {
+        return donationID;
+    }
+
+    public Food_Item getItem() {
+        return item;
+    }
+
+    public String getDonorID() {
+        return donorID;
+    }
+
     @Override
     public String toString()
     {
         return "Donation ID: " + donationID+
                 ", Food item: " + item.getItemName() +
                 ", Weight(kg): "+item.getWeightInKg()+
-                ", Quantity: "+item.getQuantity()+"\n";
+                ", Quantity: "+item.getQuantity()+
+                ", Uploaded by: "+this.getDonorID()+"\n";
     }
 }

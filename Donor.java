@@ -6,14 +6,47 @@ import java.util.Scanner;
 
 public class Donor extends User
 {
-//    AllDonationsOfDonor myDonations = new AllDonationsOfDonor();
-    //A doubly linked list to store all uploaded donations of a donor.
-    DoublyLinkedList myDonations = new DoublyLinkedList();
+    DoublyLinkedList<Donation> myDonations = new DoublyLinkedList();
     DonationRequestsOfDonor myRequests = new DonationRequestsOfDonor();
+
     public Donor(String userID, String userName, String userPassword, String phoneNumber, String location) {
         super(userID, userName, userPassword, phoneNumber, location);
         this.loadDonations();
         this.loadRequests();
+    }
+
+    public void menu()
+    {
+        int choice=0;
+        while(true)
+        {
+            Main.printSpaces(1);
+            System.out.println("==================");
+            System.out.println("  Select action");
+            System.out.println("==================");
+            System.out.println("0-Exit");
+            System.out.println("1-Upload donation");
+            System.out.println("2-View your active donations: ");
+            System.out.print("3-Check requests made to me: ");
+            choice = Main.validateInput(0,3);
+            if (choice == 0)
+            {
+                break;
+            }
+            else if (choice == 1)
+            {
+                this.uploadDonation();
+            }
+            else if (choice == 2)
+            {
+                this.viewDonations();
+            }
+            else if (choice == 3)
+            {
+                myRequests.display();
+                this.requestActions();
+            }
+        }
     }
 
     //Read all donations from file and add particular donor`s donations to his list.
@@ -30,7 +63,7 @@ public class Donor extends User
             while((line=br.readLine())!=null)
             {
                 String[] split = line.split(",");
-                //If the id of donor is equal to this donor, means that donation is hid, so add it.
+                //If the id of donor is equal to this donor, means that donation is his, so add it.
                 if (split[1].equals(this.getUserID()))
                 {
                     item = new Food_Item(split[2],split[3],split[4],split[5],
@@ -39,7 +72,7 @@ public class Donor extends User
                     //Create donation object.
                     donation = new Donation(item,this.getUserID(),split[0]);
                     //Create node of donation to insert in doubly linked list.
-                    donationNode = new Node<>(donation);
+                    donationNode = new Node<Donation>(donation);
                     //Insert in list
                     myDonations.insertAtEnd(donationNode);
                 }
@@ -110,8 +143,10 @@ public class Donor extends User
         //Create node to insert in list.
         Node<Donation> donationNode = new Node<>(donation);
         this.myDonations.insertAtEnd(donationNode);
+        Quick_Access.addDonation(donation);
         //Write new donation to file.
         donation.writeToFile();
+        System.out.println("Donation uploaded!");
     }
     //Separate function to input date in correct format.
     private LocalDate inputDate()
@@ -131,39 +166,6 @@ public class Donor extends User
         }
     }
 
-    public void menu()
-    {
-        int choice=0;
-        while(true)
-        {
-            Main.printSpaces(1);
-            System.out.println("==================");
-            System.out.println("  Select action");
-            System.out.println("==================");
-            System.out.println("0-Exit");
-            System.out.println("1-Upload donation");
-            System.out.println("2-View your active donations: ");
-            System.out.print("3-Check requests made to me: ");
-            choice = Main.validateInput(0,3);
-            if (choice == 0)
-            {
-                break;
-            }
-            else if (choice == 1)
-            {
-                this.uploadDonation();
-            }
-            else if (choice == 2)
-            {
-                this.viewDonations();
-            }
-            else if (choice == 3)
-            {
-                myRequests.display();
-                this.requestActions();
-            }
-        }
-    }
     private void viewDonations()
     {
         if (myDonations.getHead()==null)
@@ -172,42 +174,51 @@ public class Donor extends User
             return;
         }
         System.out.println("Your donations: ");
-        myDonations.displayDonations();
+        myDonations.displayList();
     }
 
     public void requestActions()
     {
+        if(this.myRequests.allRequests.isEmpty()){
+            System.out.println("No requests made to you currently!");
+            return;
+        }
          /*For request action, donor must enter only the request id which exists. To check this, we will
-         store all ids and check the entered ID against that*/
+         store all ids of his requests and check the entered ID against that*/
         DoublyLinkedList idsList = this.myRequests.storeReqIds();
-        System.out.println("Enter request id to perform action on it: ");
-        int id = Main.validateInput(1,this.myRequests.size());
+        //If there is only 1 request, do not ask the id but if more than 1, ask the id to proceed.
+        if(this.myRequests.allRequests.size()>1)
+        {
+            System.out.print("Enter request id to perform action on it: ");
+            int id = Main.validateInput(1,this.myRequests.getMaxID());
+        }
+        //If only 1 request, just take its id to perform actions.
+        int id = myRequests.getMaxID();
+        //If a request of entered id exists
         if(idsList.containsID(String.valueOf(id)))
         {
+            DonationRequest toBeDeleted = this.myRequests.getRequestByID(String.valueOf(id));
             // If request is confirmed, the food item in that request is also deleted.
-            //Otherwise only the request is deleted.
+            //Otherwise, only the request is deleted.
             System.out.print("Enter 1 to confirm request\n2 to delete request: ");
             int choice = Main.validateInput(1,2);
+            this.myRequests.allRequests.remove(toBeDeleted);
+            FileOperations.removeRequest(toBeDeleted.getRequestID());
+            Quick_Access.removeRequest(toBeDeleted.getRequestID());
+            this.myRequests.removeRequest(toBeDeleted);
             if (choice==1)
             {
                 //Delete the food item in the request
                 FileOperations.removeDonation(toBeDeleted.getFoodItemID());
+                System.out.println("Request confirmed! Food item also deleted!");
+                Quick_Access.removeDonation(toBeDeleted.getFoodItemID());
+            }
+            else {
+                System.out.println("Request rejected!");
             }
         }
-    }
-    /*Boolean is used to check that if donation is also to be deleted. If its given true, means request
-    is confirmed by donor so delete the donation from donation list also. If it`s false, request has
-    been canceled so only delete the request, not the donation*/
-    private void deleteDonation(String s,boolean b)
-    {
-        //This function will be complete by phase 2.
-        try
-        {
-
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error! "+e.getMessage());
+        else {
+            System.out.println("No request of this ID exists!");
         }
     }
 }

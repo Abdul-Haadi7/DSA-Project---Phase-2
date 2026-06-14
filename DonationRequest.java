@@ -16,6 +16,15 @@ public class DonationRequest
         FoodItemID = foodItemID;
         this.expiryDate = LocalDate.parse(expiryDate);
     }
+    //Default constructor
+    public DonationRequest()
+    {
+        this.requestID = "";
+        this.donorID = "";
+        this.receiverID = "";
+        this.FoodItemID = "";
+        this.expiryDate = LocalDate.parse("1990-10-10");
+    }
     public void storeRequestToFile(){
         try{
             FileWriter fw = new FileWriter("All donation requests.txt",true);
@@ -66,13 +75,7 @@ public class DonationRequest
         this.expiryDate = expiryDate;
     }
 
-    @Override
-//    public String toString()
-//    {
-//        return "Request ID: " + requestID+", Donor ID: " + donorID +
-//                ", Receiver ID: " + receiverID +", Food item ID: " + FoodItemID +
-//                ", Food expiry date: " + expiryDate;
-//    }
+
     public String toString()
     {
         return requestID +","+ donorID + "," +receiverID + "," + FoodItemID + "," +expiryDate;

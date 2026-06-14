@@ -14,6 +14,23 @@ public class DonationRequestsOfDonor
     {
         this.allRequests.remove(r);
     }
+    public void removeRequest(String id)
+    {
+        for (DonationRequest req: this.allRequests){
+            if (req.getRequestID().equals(id)){
+                this.allRequests.remove(req);
+            }
+        }
+    }
+    public DonationRequest getRequestByID(String id)
+    {
+        for (DonationRequest req: this.allRequests){
+            if (req.getRequestID().equals(id)){
+                return req;
+            }
+        }
+        return new DonationRequest();
+    }
     public void display()
     {
         for(DonationRequest r:allRequests){
@@ -34,5 +51,16 @@ public class DonationRequestsOfDonor
             list.insertAtEnd(new Node<>(r.getRequestID()));
         }
         return list;
+    }
+    public int getMaxID()
+    {
+        int max=0;
+        for (DonationRequest req: this.allRequests)
+        {
+            if (Integer.parseInt(req.getRequestID()) > max){
+                max = Integer.parseInt(req.getRequestID());
+            }
+        }
+        return max;
     }
 }

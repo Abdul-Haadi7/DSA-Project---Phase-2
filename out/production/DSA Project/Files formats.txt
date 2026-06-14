@@ -1,0 +1,7 @@
+This file tells how the data is stored in each file.
+
+1- Users login detais:- Name,User_ID,Phone_number,Location,Password
+
+2- All active donations:- Donation_ID,Donor_ID,FoodItem_ID,FoodItem_Name,Food_category,Weight_kg,Quantity,Expiry_Date
+
+3- All donation requests:- Request_ID,Donor_ID,Receiver_ID,FoodItem_ID,FoodItem_ExpiryDate

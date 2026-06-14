@@ -1,3 +1,4 @@
 1,Haadi.7,1,Burger,Lahore,packed,20.0,10,2021-01-01
-2,Haadi.7,2,Rice,Lahore,raw,200.0,1,2021-01-01
-3,Qadir.8,3,Mutton,Lahore,raw,30.0,1,2021-12-12
+4,Billa.7,4,Flour,Kohat,Raw,20.0,1,2027-06-07
+5,Qadir.8,5,Rice,Lahore,Raw,50.0,1,2030-01-01
+6,Bobzy56,6,Pizza,Pindi,Cooked,5.0,15,2026-06-15

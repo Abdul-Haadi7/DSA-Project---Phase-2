@@ -6,16 +6,16 @@ public class FileOperations
 {
     public static void removeDonation(String id)
     {
-        FileOperations.transferDonationsToDummy();
+        FileOperations.transferDonationsToDummy("All active donations.txt");
         FileOperations.makeFileBlank("All active donations.txt");
-        FileOperations.writeBackUpdatedDonations(id);
+        FileOperations.writeBackUpdatedData(id,"All active donations.txt");
         FileOperations.makeFileBlank("Dummy.txt");
     }
-    private static void transferDonationsToDummy()
+    private static void transferDonationsToDummy(String fileNameToTransfer)
     {
         try{
             FileWriter fw = new FileWriter("Dummy.txt",true);
-            FileReader fr = new FileReader("All active donations.txt");
+            FileReader fr = new FileReader(fileNameToTransfer);
             BufferedReader br = new BufferedReader(fr);
             String line;
             while((line = br.readLine())!=null){
@@ -38,16 +38,16 @@ public class FileOperations
             System.out.println("Error! "+e.getMessage());
         }
     }
-    private static void writeBackUpdatedDonations(String id){
+    private static void writeBackUpdatedData(String idToIgnore,String fileToWrite){
         try{
-            FileWriter fw = new FileWriter("All active donations.txt",true);
+            FileWriter fw = new FileWriter(fileToWrite,true);
             FileReader fr = new FileReader("Dummy.txt");
             BufferedReader br = new BufferedReader(fr);
             String line;
             while((line = br.readLine())!=null)
             {
                 String split[] = line.split(",");
-                if (split[0].equals(id)){
+                if (split[0].equals(idToIgnore)){
                     continue;
                 }
                 fw.write(line+"\n");
@@ -58,5 +58,12 @@ public class FileOperations
         } catch (Exception e) {
             System.out.println("Error! "+e.getMessage());
         }
+    }
+    public static void removeRequest(String id)
+    {
+        transferDonationsToDummy("All donation requests.txt");
+        makeFileBlank("All donation requests.txt");
+        writeBackUpdatedData(id,"All donation requests.txt");
+        makeFileBlank("Dummy.txt");
     }
 }
